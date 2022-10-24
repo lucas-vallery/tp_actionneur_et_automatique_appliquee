@@ -1,20 +1,20 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -29,7 +29,16 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define UART_TX_BUFFER_SIZE 64
+#define UART_RX_BUFFER_SIZE 1
+#define CMD_BUFFER_SIZE 64
+#define MAX_ARGS 9
+// LF = line feed, saut de ligne
+#define ASCII_LF 0x0A
+// CR = carriage return, retour chariot
+#define ASCII_CR 0x0D
+// DEL = delete
+#define ASCII_DEL 0x7F
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -44,7 +53,17 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t prompt[]="user@Nucleo-STM32G431>>";
+uint8_t started[]=
+		"\r\n*-----------------------------*"
+		"\r\n| Welcome on Nucleo-STM32G431 |"
+		"\r\n*-----------------------------*"
+		"\r\n";
+uint8_t newline[]="\r\n";
+uint8_t cmdNotFound[]="Command not found\r\n";
+uint32_t uartRxReceived;
+uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
+uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,7 +84,12 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	char	 	cmdBuffer[CMD_BUFFER_SIZE];
+	int 		idx_cmd;
+	char* 		argv[MAX_ARGS];
+	int		 	argc = 0;
+	char*		token;
+	int 		newCmdReady = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -89,17 +113,25 @@ int main(void)
   MX_TIM1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+	memset(argv,NULL,MAX_ARGS*sizeof(char*));
+	memset(cmdBuffer,NULL,CMD_BUFFER_SIZE*sizeof(char));
+	memset(uartRxBuffer,NULL,UART_RX_BUFFER_SIZE*sizeof(char));
+	memset(uartTxBuffer,NULL,UART_TX_BUFFER_SIZE*sizeof(char));
 
+	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
+	HAL_Delay(10);
+	HAL_UART_Transmit(&huart2, started, sizeof(started), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+	while (1)
+	{
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+	}
   /* USER CODE END 3 */
 }
 
@@ -160,11 +192,11 @@ void SystemClock_Config(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1)
+	{
+	}
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -179,7 +211,7 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
+	/* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
