@@ -55,17 +55,27 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t prompt[]="user@Nucleo-STM32G431>>";
+const uint8_t prompt[]="user@Nucleo-STM32G431>>";
 uint8_t started[]=
 		"\r\n*-----------------------------*"
-		"\r\n| Welcome on Nucleo-STM32G431 |"
+		"\r\n| Welcome on Nucleo-STM32G474 |"
 		"\r\n*-----------------------------*"
 		"\r\n";
-uint8_t newline[]="\r\n";
-uint8_t cmdNotFound[]="Command not found\r\n";
+const uint8_t newline[]="\r\n";
+const uint8_t cmdNotFound[]="Command not found\r\n";
+const uint8_t startmsg[] = "Power ON\r\n";
+const uint8_t stopmsg[] = "Power OFF\r\n";
 uint32_t uartRxReceived;
 uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
 uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
+const char help[5][32]=
+{
+		"set <pin> <state>\r\n",
+		"get <pin> <state>\r\n",
+		"start\r\n",
+		"stop\r\n",
+		"pinout\r\n"
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,6 +134,16 @@ int main(void)
 	HAL_Delay(10);
 	HAL_UART_Transmit(&huart2, started, sizeof(started), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+
+	// Starting sequence
+	HAL_GPIO_WritePin(ISO_RESET_GPIO_Port, ISO_RESET_Pin, SET);
+	HAL_Delay(1);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, RESET);
+
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -173,6 +193,34 @@ int main(void)
 			else if(strcmp(argv[0],"get")==0)
 			{
 				HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
+			}
+			else if(strcmp(argv[0],"start")==0) {
+				HAL_UART_Transmit(&huart2, startmsg, sizeof(startmsg), HAL_MAX_DELAY);
+			}
+			else if(strcmp(argv[0],"stop")==0) {
+				HAL_UART_Transmit(&huart2, stopmsg, sizeof(stopmsg), HAL_MAX_DELAY);
+			}
+			else if(strcmp(argv[0],"help")==0)
+			{
+				if(strcmp(argv[1], "set")==0){
+					HAL_UART_Transmit(&huart2, (uint8_t*)&help[0], sizeof(help[0]), HAL_MAX_DELAY);
+				}
+				else if(strcmp(argv[1], "get")==0){
+					HAL_UART_Transmit(&huart2, (uint8_t*)&help[1], sizeof(help[1]), HAL_MAX_DELAY);
+				}
+				else if(strcmp(argv[1], "start")==0){
+					HAL_UART_Transmit(&huart2, (uint8_t*)&help[2], sizeof(help[2]), HAL_MAX_DELAY);
+				}
+				else if(strcmp(argv[1], "stop")==0){
+					HAL_UART_Transmit(&huart2, (uint8_t*)&help[3], sizeof(help[3]), HAL_MAX_DELAY);
+				}
+				else if(strcmp(argv[1], "pinout")==0){
+					HAL_UART_Transmit(&huart2, (uint8_t*)&help[4], sizeof(help[4]), HAL_MAX_DELAY);
+				}
+				else{
+					HAL_UART_Transmit(&huart2, (uint8_t*)&help, sizeof(help), HAL_MAX_DELAY);
+				}
+
 			}
 			else{
 				HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
@@ -234,7 +282,10 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart){
+	uartRxReceived = 1;
+	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
+}
 /* USER CODE END 4 */
 
 /**
