@@ -41,3 +41,7 @@ typedef struct h_shell_struct {
 	uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
 	uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
 }h_shell_t;
+
+typedef struct h_truct_tet{
+};
+};
