@@ -32,7 +32,6 @@ typedef struct h_serial_struct {
 
 
 /**
- * @struct h_shell_t
  * @brief Shell structure
  */
 typedef struct h_shell_struct {
