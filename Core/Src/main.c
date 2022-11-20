@@ -28,19 +28,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 /* USER CODE END Includes */
-
+#include "serial_abstraction.h"
+#include "shell.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#define UART_TX_BUFFER_SIZE 64
-#define UART_RX_BUFFER_SIZE 1
-#define CMD_BUFFER_SIZE 64
-#define MAX_ARGS 9
-// LF = line feed, saut de ligne
-#define ASCII_LF 0x0A
-// CR = carriage return, retour chariot
-#define ASCII_CR 0x0D
-// DEL = delete
-#define ASCII_DEL 0x7F
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -55,6 +47,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+h_shell_t shell;
+
 const uint8_t prompt[]="user@Nucleo-STM32G431>>";
 uint8_t started[]=
 		"\r\n*-----------------------------*"
@@ -65,9 +59,7 @@ const uint8_t newline[]="\r\n";
 const uint8_t cmdNotFound[]="Command not found\r\n";
 const uint8_t startmsg[] = "Power ON\r\n";
 const uint8_t stopmsg[] = "Power OFF\r\n";
-uint32_t uartRxReceived;
-uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
-uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
+
 const char help[5][32]=
 {
 		"set <pin> <state>\r\n",
@@ -96,6 +88,10 @@ void SystemClock_Config(void);
 int main(void)
 {
 	/* USER CODE BEGIN 1 */
+	shell.serial.transmit = serial_transmit;
+	shell.serial.receive = serial_receive;
+
+
 	char	 	cmdBuffer[CMD_BUFFER_SIZE];
 	int 		idx_cmd;
 	char* 		argv[MAX_ARGS];
@@ -127,10 +123,10 @@ int main(void)
 	/* USER CODE BEGIN 2 */
 	memset(argv,(int) NULL,MAX_ARGS*sizeof(char*));
 	memset(cmdBuffer,(int) NULL,CMD_BUFFER_SIZE*sizeof(char));
-	memset(uartRxBuffer,(int) NULL,UART_RX_BUFFER_SIZE*sizeof(char));
-	memset(uartTxBuffer,(int) NULL,UART_TX_BUFFER_SIZE*sizeof(char));
+	memset(shell.uartRxBuffer,(int) NULL,UART_RX_BUFFER_SIZE*sizeof(char));
+	memset(shell.uartTxBuffer,(int) NULL,UART_TX_BUFFER_SIZE*sizeof(char));
 
-	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
+	HAL_UART_Receive_IT(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE);
 	HAL_Delay(10);
 	HAL_UART_Transmit(&huart2, started, sizeof(started), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
@@ -150,8 +146,8 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{	// uartRxReceived is set to 1 when a new character is received on uart 1
-		if(uartRxReceived){
-			switch(uartRxBuffer[0]){
+		if(shell.uartRxReceived){
+			switch(shell.uartRxBuffer[0]){
 			// Nouvelle ligne, instruction à traiter
 			case ASCII_CR:
 				HAL_UART_Transmit(&huart2, newline, sizeof(newline), HAL_MAX_DELAY);
@@ -169,22 +165,22 @@ int main(void)
 				// Suppression du dernier caractère
 			case ASCII_DEL:
 				cmdBuffer[idx_cmd--] = '\0';
-				HAL_UART_Transmit(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
+				HAL_UART_Transmit(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
 				break;
 				// Nouveau caractère
 			default:
-				cmdBuffer[idx_cmd++] = uartRxBuffer[0];
-				HAL_UART_Transmit(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
+				cmdBuffer[idx_cmd++] = shell.uartRxBuffer[0];
+				HAL_UART_Transmit(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
 			}
-			uartRxReceived = 0;
+			shell.uartRxReceived = 0;
 		}
 
 		if(newCmdReady){
 			if(strcmp(argv[0],"set")==0){
 				if(strcmp(argv[1],"PA5")==0){
 					HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, atoi(argv[2]));
-					sprintf((char*) &uartTxBuffer,"Switch on/off led : %d\r\n",atoi(argv[2]));
-					HAL_UART_Transmit(&huart2, uartTxBuffer, 32, HAL_MAX_DELAY);
+					sprintf((char*) &(shell.uartTxBuffer),"Switch on/off led : %d\r\n",atoi(argv[2]));
+					HAL_UART_Transmit(&huart2, shell.uartTxBuffer, 32, HAL_MAX_DELAY);
 				}
 				else{
 					HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
@@ -283,8 +279,8 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart){
-	uartRxReceived = 1;
-	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
+	shell.uartRxReceived = 1;
+	HAL_UART_Receive_IT(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE);
 }
 /* USER CODE END 4 */
 
