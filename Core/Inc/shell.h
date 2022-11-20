@@ -31,11 +31,12 @@ typedef struct h_serial_struct {
 }h_serial_t;
 
 
-
+/**
+ * @brief Structure to handle the shell
+ */
 typedef struct h_shell_struct {
 	h_serial_t serial;
 
-	//Pb de malloc ???
 	uint32_t uartRxReceived;
 	uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
 	uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
