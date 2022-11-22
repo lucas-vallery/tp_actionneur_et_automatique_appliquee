@@ -27,9 +27,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-/* USER CODE END Includes */
-#include "serial_abstraction.h"
+#include "hal_abstraction.h"
 #include "shell.h"
+#include "chopper.h"
+/* USER CODE END Includes */
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
@@ -37,6 +39,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -60,13 +63,24 @@ const uint8_t cmdNotFound[]="Command not found\r\n";
 const uint8_t startmsg[] = "Power ON\r\n";
 const uint8_t stopmsg[] = "Power OFF\r\n";
 
-const char help[5][32]=
+const uint8_t help[5][32]=
 {
 		"set <pin> <state>\r\n",
 		"get <pin> <state>\r\n",
 		"start\r\n",
 		"stop\r\n",
 		"pinout\r\n"
+};
+
+const uint8_t pinoutmsg[7][64]=
+{
+		"Pinout\r\n",
+		" ------------------\r\n"
+		"| PA8  | TIM1_CH1  |\r\n",
+		"| PA9  | TIM1_CH2  |\r\n",
+		"| PA11 | TIM1_CH1N |\r\n",
+		"| PA12 | TIM1_CH2N |\r\n",
+		" ------------------\r\n"
 };
 /* USER CODE END PV */
 
@@ -135,10 +149,6 @@ int main(void)
 	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
 	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
 
-	// Starting sequence
-	HAL_GPIO_WritePin(ISO_RESET_GPIO_Port, ISO_RESET_Pin, SET);
-	HAL_Delay(1);
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, RESET);
 
 	/* USER CODE END 2 */
 
@@ -150,7 +160,7 @@ int main(void)
 			switch(shell.uartRxBuffer[0]){
 			// Nouvelle ligne, instruction à traiter
 			case ASCII_CR:
-				HAL_UART_Transmit(&huart2, newline, sizeof(newline), HAL_MAX_DELAY);
+				shell.serial.transmit((uint8_t*) newline, sizeof(newline), HAL_MAX_DELAY);
 				cmdBuffer[idx_cmd] = '\0';
 				argc = 0;
 				token = strtok(cmdBuffer, " ");
@@ -165,12 +175,12 @@ int main(void)
 				// Suppression du dernier caractère
 			case ASCII_DEL:
 				cmdBuffer[idx_cmd--] = '\0';
-				HAL_UART_Transmit(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
+				shell.serial.transmit(shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
 				break;
 				// Nouveau caractère
 			default:
 				cmdBuffer[idx_cmd++] = shell.uartRxBuffer[0];
-				HAL_UART_Transmit(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
+				shell.serial.transmit(shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
 			}
 			shell.uartRxReceived = 0;
 		}
@@ -180,48 +190,52 @@ int main(void)
 				if(strcmp(argv[1],"PA5")==0){
 					HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, atoi(argv[2]));
 					sprintf((char*) &(shell.uartTxBuffer),"Switch on/off led : %d\r\n",atoi(argv[2]));
-					HAL_UART_Transmit(&huart2, shell.uartTxBuffer, 32, HAL_MAX_DELAY);
+					shell.serial.transmit(shell.uartTxBuffer, 32, HAL_MAX_DELAY);
 				}
 				else{
-					HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
+					shell.serial.transmit((uint8_t*)cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
 				}
 			}
 			else if(strcmp(argv[0],"get")==0)
 			{
-				HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
+				shell.serial.transmit((uint8_t*)cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
 			}
 			else if(strcmp(argv[0],"start")==0) {
-				HAL_UART_Transmit(&huart2, startmsg, sizeof(startmsg), HAL_MAX_DELAY);
+				chopper_start();
+
+				shell.serial.transmit((uint8_t*)startmsg, sizeof(startmsg), HAL_MAX_DELAY);
 			}
 			else if(strcmp(argv[0],"stop")==0) {
-				HAL_UART_Transmit(&huart2, stopmsg, sizeof(stopmsg), HAL_MAX_DELAY);
+				shell.serial.transmit((uint8_t*)stopmsg, sizeof(stopmsg), HAL_MAX_DELAY);
 			}
 			else if(strcmp(argv[0],"help")==0)
 			{
 				if(strcmp(argv[1], "set")==0){
-					HAL_UART_Transmit(&huart2, (uint8_t*)&help[0], sizeof(help[0]), HAL_MAX_DELAY);
+					shell.serial.transmit((uint8_t*)&help[0], sizeof(help[0]), HAL_MAX_DELAY);
 				}
 				else if(strcmp(argv[1], "get")==0){
-					HAL_UART_Transmit(&huart2, (uint8_t*)&help[1], sizeof(help[1]), HAL_MAX_DELAY);
+					shell.serial.transmit((uint8_t*)&help[1], sizeof(help[1]), HAL_MAX_DELAY);
 				}
 				else if(strcmp(argv[1], "start")==0){
-					HAL_UART_Transmit(&huart2, (uint8_t*)&help[2], sizeof(help[2]), HAL_MAX_DELAY);
+					shell.serial.transmit((uint8_t*)&help[2], sizeof(help[2]), HAL_MAX_DELAY);
 				}
 				else if(strcmp(argv[1], "stop")==0){
-					HAL_UART_Transmit(&huart2, (uint8_t*)&help[3], sizeof(help[3]), HAL_MAX_DELAY);
+					shell.serial.transmit((uint8_t*)&help[3], sizeof(help[3]), HAL_MAX_DELAY);
 				}
 				else if(strcmp(argv[1], "pinout")==0){
-					HAL_UART_Transmit(&huart2, (uint8_t*)&help[4], sizeof(help[4]), HAL_MAX_DELAY);
+					shell.serial.transmit((uint8_t*)&help[4], sizeof(help[4]), HAL_MAX_DELAY);
 				}
 				else{
-					HAL_UART_Transmit(&huart2, (uint8_t*)&help, sizeof(help), HAL_MAX_DELAY);
+					shell.serial.transmit((uint8_t*)&help, sizeof(help), HAL_MAX_DELAY);
 				}
-
+			}
+			else if(strcmp(argv[0],"pinout")==0) {
+				shell.serial.transmit((uint8_t*)&pinoutmsg, sizeof(pinoutmsg), HAL_MAX_DELAY);
 			}
 			else{
-				HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
+				shell.serial.transmit((uint8_t*)cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
 			}
-			HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
+			shell.serial.transmit((uint8_t*)prompt, sizeof(prompt), HAL_MAX_DELAY);
 			newCmdReady = 0;
 		}
 		/* USER CODE END WHILE */
@@ -280,7 +294,7 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart){
 	shell.uartRxReceived = 1;
-	HAL_UART_Receive_IT(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE);
+	shell.serial.receive(shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
 }
 /* USER CODE END 4 */
 

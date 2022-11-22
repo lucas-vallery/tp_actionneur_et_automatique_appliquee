@@ -9,8 +9,8 @@
 #include <stdio.h>
 #include <usart.h>
 
-#define USART_PORT &huart2
+#define SERIAL_PORT &huart2
 
-int serial_transmit(uint8_t *pData, uint16_t size, uint32_t timeout);
+int serial_transmit(const uint8_t *pData, uint16_t size, uint32_t timeout);
 
 int serial_receive(uint8_t *pData, uint16_t size, uint32_t timeout);
