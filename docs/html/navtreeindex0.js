@@ -1,0 +1,26 @@
+var NAVTREEINDEX0 =
+{
+"annotated.html":[0,0],
+"chopper_8h.html":[1,0,0,0,0],
+"chopper_8h.html#a5cf41296fc0d49e873c241e14fcbdf31":[1,0,0,0,0,2],
+"chopper_8h.html#ad47cfd9fa41994cb53f7303b30519ed3":[1,0,0,0,0,0],
+"chopper_8h.html#af6d055a1565b1d2a0dfbcb56e328b70e":[1,0,0,0,0,1],
+"chopper_8h_source.html":[1,0,0,0,0],
+"classes.html":[0,1],
+"dir_c6310732a22f63c0c2fc5595561e68f1.html":[1,0,0],
+"dir_e2489e887f17afa3cbc07a4ec152cdd2.html":[1,0,0,0],
+"files.html":[1,0],
+"globals.html":[1,1,0],
+"globals_func.html":[1,1,1],
+"globals_type.html":[1,1,2],
+"hal__abstraction_8h.html":[1,0,0,0,1],
+"hal__abstraction_8h.html#a2a8471f54d64230bf62d16c8bb91fd1a":[1,0,0,0,1,0],
+"hal__abstraction_8h_source.html":[1,0,0,0,1],
+"index.html":[],
+"pages.html":[],
+"shell_8h.html":[1,0,0,0,2],
+"shell_8h.html#a882be42a49ddc3335e643d6e7ff324bb":[1,0,0,0,2,2],
+"shell_8h_source.html":[1,0,0,0,2],
+"structh__serial__struct.html":[0,0,0],
+"structh__shell__struct.html":[0,0,1]
+};

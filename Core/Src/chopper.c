@@ -2,7 +2,7 @@
 
 void chopper_start(void){
 	HAL_GPIO_WritePin(ISO_RESET_GPIO_Port, ISO_RESET_Pin, SET);
-	HAL_Delay(1);
+	HAL_Delay(STARTING_TIME);
 	HAL_GPIO_WritePin(ISO_RESET_GPIO_Port, ISO_RESET_Pin, RESET);
 
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);

@@ -1,9 +1,9 @@
-/*
- * shell.h
- *
- *  Created on: Oct 31, 2022
- *      Author: lucas
+/**
+ * @file 	shell.h
+ * @brief 	This file contains all the functions prototypes for
+ * 			the shell.c file
  */
+
 
 #pragma once
 
@@ -21,7 +21,6 @@
 #define ASCII_CR 0x0D
 // DEL = delete
 #define ASCII_DEL 0x7F
-
 
 typedef int (* serial_transmit_t)(const uint8_t *pData, uint16_t size, uint32_t timeout);
 typedef int (* serial_receive_t)(uint8_t *pData, uint16_t size, uint32_t timeout);
