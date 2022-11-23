@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -82,6 +84,7 @@ const uint8_t pinoutmsg[7][64]=
 		"| PA12 | TIM1_CH2N |\r\n",
 		" ------------------\r\n"
 };
+uint16_t 	rawCurrent[1];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,7 +95,11 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int __io_putchar(int ch)
+{
+	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+	return ch;
+}
 /* USER CODE END 0 */
 
 /**
@@ -132,8 +139,10 @@ int main(void)
 
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
+	MX_DMA_Init();
 	MX_TIM1_Init();
 	MX_USART2_UART_Init();
+	MX_ADC1_Init();
 	/* USER CODE BEGIN 2 */
 	memset(argv,(int) NULL,MAX_ARGS*sizeof(char*));
 	memset(cmdBuffer,(int) NULL,CMD_BUFFER_SIZE*sizeof(char));
@@ -144,10 +153,7 @@ int main(void)
 	HAL_Delay(10);
 	HAL_UART_Transmit(&huart2, started, sizeof(started), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&rawCurrent, 1);
 
 
 	/* USER CODE END 2 */
@@ -206,6 +212,8 @@ int main(void)
 				shell.serial.transmit((uint8_t*)startmsg, sizeof(startmsg), HAL_MAX_DELAY);
 			}
 			else if(strcmp(argv[0],"stop")==0) {
+				chopper_stop();
+
 				shell.serial.transmit((uint8_t*)stopmsg, sizeof(stopmsg), HAL_MAX_DELAY);
 			}
 			else if(strcmp(argv[0],"help")==0)
@@ -223,6 +231,7 @@ int main(void)
 					shell.serial.transmit((uint8_t*)&help[3], sizeof(help[3]), HAL_MAX_DELAY);
 				}
 				else if(strcmp(argv[1], "pinout")==0){
+
 					shell.serial.transmit((uint8_t*)&help[4], sizeof(help[4]), HAL_MAX_DELAY);
 				}
 				else{
@@ -231,6 +240,16 @@ int main(void)
 			}
 			else if(strcmp(argv[0],"pinout")==0) {
 				shell.serial.transmit((uint8_t*)&pinoutmsg, sizeof(pinoutmsg), HAL_MAX_DELAY);
+			}
+			else if(strcmp(argv[0],"speed")==0) {
+				if(argv[1] != NULL){
+					uint16_t speed;
+					sscanf(argv[1], "%hd", &speed);
+					chopper_speed(speed);
+				}
+				else{
+					printf("%hn", dataRaw);
+				}
 			}
 			else{
 				shell.serial.transmit((uint8_t*)cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
@@ -294,7 +313,11 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart){
 	shell.uartRxReceived = 1;
-	shell.serial.receive(shell.uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
+	HAL_UART_Receive_IT(&huart2, shell.uartRxBuffer, UART_RX_BUFFER_SIZE);
+}
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&rawCurrent, 1);
 }
 /* USER CODE END 4 */
 
