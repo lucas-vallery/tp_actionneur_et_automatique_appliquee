@@ -108,6 +108,7 @@ Include dependency graph for shell.h:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structh__serial__struct.html">h_serial_struct</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to handle the UART abstraction layer.  <a href="structh__serial__struct.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structh__shell__struct.html">h_shell_struct</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shell structure.  <a href="structh__shell__struct.html#details">More...</a><br /></td></tr>
@@ -127,14 +128,11 @@ Macros</h2></td></tr>
 <tr class="memitem:a29b7451465deac204c5f7cb1f9c6e1fc"><td class="memItemLeft" align="right" valign="top"><a id="a29b7451465deac204c5f7cb1f9c6e1fc" name="a29b7451465deac204c5f7cb1f9c6e1fc"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_ARGS</b>&#160;&#160;&#160;9</td></tr>
 <tr class="separator:a29b7451465deac204c5f7cb1f9c6e1fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca3b498f5936dbe4f3076a47c3e1810d"><td class="memItemLeft" align="right" valign="top"><a id="aca3b498f5936dbe4f3076a47c3e1810d" name="aca3b498f5936dbe4f3076a47c3e1810d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ASCII_LF</b>&#160;&#160;&#160;0x0A</td></tr>
+<tr class="memitem:aca3b498f5936dbe4f3076a47c3e1810d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shell_8h.html#aca3b498f5936dbe4f3076a47c3e1810d">ASCII_LF</a>&#160;&#160;&#160;0x0A</td></tr>
 <tr class="separator:aca3b498f5936dbe4f3076a47c3e1810d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a089ed4925403ab02a05e603967c74579"><td class="memItemLeft" align="right" valign="top"><a id="a089ed4925403ab02a05e603967c74579" name="a089ed4925403ab02a05e603967c74579"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ASCII_CR</b>&#160;&#160;&#160;0x0D</td></tr>
+<tr class="memitem:a089ed4925403ab02a05e603967c74579"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shell_8h.html#a089ed4925403ab02a05e603967c74579">ASCII_CR</a>&#160;&#160;&#160;0x0D</td></tr>
 <tr class="separator:a089ed4925403ab02a05e603967c74579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bb28e223b7c203113dc8c0387d43b36"><td class="memItemLeft" align="right" valign="top"><a id="a3bb28e223b7c203113dc8c0387d43b36" name="a3bb28e223b7c203113dc8c0387d43b36"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ASCII_DEL</b>&#160;&#160;&#160;0x7F</td></tr>
+<tr class="memitem:a3bb28e223b7c203113dc8c0387d43b36"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shell_8h.html#a3bb28e223b7c203113dc8c0387d43b36">ASCII_DEL</a>&#160;&#160;&#160;0x7F</td></tr>
 <tr class="separator:a3bb28e223b7c203113dc8c0387d43b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -145,8 +143,8 @@ typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><b>serial_trans
 <tr class="memitem:a0363aa4045493e23f9b82721b3da8e47"><td class="memItemLeft" align="right" valign="top"><a id="a0363aa4045493e23f9b82721b3da8e47" name="a0363aa4045493e23f9b82721b3da8e47"></a>
 typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><b>serial_receive_t</b>) (uint8_t *pData, uint16_t size, uint32_t timeout)</td></tr>
 <tr class="separator:a0363aa4045493e23f9b82721b3da8e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4caf64b8064599e1f8636c064ac69f6"><td class="memItemLeft" align="right" valign="top"><a id="ac4caf64b8064599e1f8636c064ac69f6" name="ac4caf64b8064599e1f8636c064ac69f6"></a>
-typedef struct <a class="el" href="structh__serial__struct.html">h_serial_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><b>h_serial_t</b></td></tr>
+<tr class="memitem:ac4caf64b8064599e1f8636c064ac69f6"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structh__serial__struct.html">h_serial_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shell_8h.html#ac4caf64b8064599e1f8636c064ac69f6">h_serial_t</a></td></tr>
+<tr class="memdesc:ac4caf64b8064599e1f8636c064ac69f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to handle the UART abstraction layer.  <a href="shell_8h.html#ac4caf64b8064599e1f8636c064ac69f6">More...</a><br /></td></tr>
 <tr class="separator:ac4caf64b8064599e1f8636c064ac69f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a882be42a49ddc3335e643d6e7ff324bb"><td class="memItemLeft" align="right" valign="top"><a id="a882be42a49ddc3335e643d6e7ff324bb" name="a882be42a49ddc3335e643d6e7ff324bb"></a>
 typedef struct <a class="el" href="structh__shell__struct.html">h_shell_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><b>h_shell_t</b></td></tr>
@@ -155,7 +153,71 @@ typedef struct <a class="el" href="structh__shell__struct.html">h_shell_struct</
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This file contains all the functions prototypes for the shell.c file. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a089ed4925403ab02a05e603967c74579" name="a089ed4925403ab02a05e603967c74579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a089ed4925403ab02a05e603967c74579">&#9670;&nbsp;</a></span>ASCII_CR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ASCII_CR&#160;&#160;&#160;0x0D</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >ASCII code of the carriage return </p>
+
+</div>
+</div>
+<a id="a3bb28e223b7c203113dc8c0387d43b36" name="a3bb28e223b7c203113dc8c0387d43b36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bb28e223b7c203113dc8c0387d43b36">&#9670;&nbsp;</a></span>ASCII_DEL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ASCII_DEL&#160;&#160;&#160;0x7F</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >ASCII code of delete </p>
+
+</div>
+</div>
+<a id="aca3b498f5936dbe4f3076a47c3e1810d" name="aca3b498f5936dbe4f3076a47c3e1810d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca3b498f5936dbe4f3076a47c3e1810d">&#9670;&nbsp;</a></span>ASCII_LF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ASCII_LF&#160;&#160;&#160;0x0A</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >ASCII code of the lign feed </p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ac4caf64b8064599e1f8636c064ac69f6" name="ac4caf64b8064599e1f8636c064ac69f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4caf64b8064599e1f8636c064ac69f6">&#9670;&nbsp;</a></span>h_serial_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structh__serial__struct.html">h_serial_struct</a> <a class="el" href="shell_8h.html#ac4caf64b8064599e1f8636c064ac69f6">h_serial_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Structure to handle the UART abstraction layer. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Need to be initialized in the main with the corresponding functions </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

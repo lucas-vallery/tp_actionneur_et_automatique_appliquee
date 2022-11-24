@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['h_5fserial_5fstruct_0',['h_serial_struct',['../structh__serial__struct.html',1,'']]],
-  ['h_5fshell_5fstruct_1',['h_shell_struct',['../structh__shell__struct.html',1,'']]],
-  ['h_5fshell_5ft_2',['h_shell_t',['../shell_8h.html#a882be42a49ddc3335e643d6e7ff324bb',1,'shell.h']]],
-  ['hal_5fabstraction_2eh_3',['hal_abstraction.h',['../hal__abstraction_8h.html',1,'']]]
+  ['chopper_2eh_0',['chopper.h',['../chopper_8h.html',1,'']]],
+  ['chopper_5frestart_1',['chopper_restart',['../chopper_8h.html#aa211df7c4ac4c73a7c6e5e4a9eba1853',1,'chopper.h']]],
+  ['chopper_5fspeed_2',['chopper_speed',['../chopper_8h.html#ad47cfd9fa41994cb53f7303b30519ed3',1,'chopper.h']]],
+  ['chopper_5fstart_3',['chopper_start',['../chopper_8h.html#af6d055a1565b1d2a0dfbcb56e328b70e',1,'chopper.h']]],
+  ['chopper_5fstop_4',['chopper_stop',['../chopper_8h.html#a5cf41296fc0d49e873c241e14fcbdf31',1,'chopper.h']]]
 ];
