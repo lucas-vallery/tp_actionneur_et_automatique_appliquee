@@ -9,7 +9,7 @@ void chopper_start(void){
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
 	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
-	//HAL_TIM_Base_Start(&htim1);
+	HAL_TIM_Base_Start(&htim1);
 }
 
 void chopper_stop(void){
@@ -21,6 +21,11 @@ void chopper_stop(void){
 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
 	HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
 
+}
+
+void chopper_restart(void){
+	chopper_stop();
+	chopper_start();
 }
 
 int chopper_speed(uint16_t targetSpeed){

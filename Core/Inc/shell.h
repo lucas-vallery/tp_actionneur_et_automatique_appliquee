@@ -15,16 +15,31 @@
 #define UART_RX_BUFFER_SIZE 1
 #define CMD_BUFFER_SIZE 64
 #define MAX_ARGS 9
-// LF = line feed, saut de ligne
+
+/**
+ * @def ASCII_LF
+ * ASCII code of the lign feed
+ */
 #define ASCII_LF 0x0A
-// CR = carriage return, retour chariot
+/**
+ * @def ASCII_CR
+ * ASCII code of the carriage return
+ */
 #define ASCII_CR 0x0D
-// DEL = delete
+/**
+ * @def ASCII_DEL
+ * ASCII code of delete
+ */
 #define ASCII_DEL 0x7F
 
 typedef int (* serial_transmit_t)(const uint8_t *pData, uint16_t size, uint32_t timeout);
 typedef int (* serial_receive_t)(uint8_t *pData, uint16_t size, uint32_t timeout);
 
+/**
+ * @brief Structure to handle the UART abstraction layer
+ *
+ * @warning Need to be initialized in the main with the corresponding functions
+ */
 typedef struct h_serial_struct {
 	serial_transmit_t 	transmit;
 	serial_receive_t 	receive;

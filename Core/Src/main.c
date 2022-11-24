@@ -41,7 +41,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define CURRENT_CONVERSION_FACTOR		(3.3/4096.0)*12.0
+#define CURRENT_OFFSET					2.5*12.0
+#define TICK_PER_ROTATION				4096.0
+#define MS_TO_MIN						1000 * 60
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -64,14 +67,16 @@ const uint8_t newline[]="\r\n";
 const uint8_t cmdNotFound[]="Command not found\r\n";
 const uint8_t startmsg[] = "Power ON\r\n";
 const uint8_t stopmsg[] = "Power OFF\r\n";
+const uint8_t restartmsg[] = "Restarting...\r\nPower ON\r\n";
 
-const uint8_t help[5][32]=
+const uint8_t help[6][32]=
 {
 		"set <pin> <state>\r\n",
-		"get <pin> <state>\r\n",
+		"get <value name>\r\n",
 		"start\r\n",
 		"stop\r\n",
-		"pinout\r\n"
+		"pinout\r\n",
+		"restart\r\n"
 };
 
 const uint8_t pinoutmsg[7][64]=
@@ -84,7 +89,11 @@ const uint8_t pinoutmsg[7][64]=
 		"| PA12 | TIM1_CH2N |\r\n",
 		" ------------------\r\n"
 };
-uint16_t 	rawCurrent[1];
+uint32_t 	rawCurrent[1];
+float 	current;
+
+uint32_t currentCNT, previousCNT;
+uint32_t diff;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -143,7 +152,18 @@ int main(void)
 	MX_TIM1_Init();
 	MX_USART2_UART_Init();
 	MX_ADC1_Init();
+	MX_TIM3_Init();
+	MX_TIM4_Init();
 	/* USER CODE BEGIN 2 */
+	/*
+	 * MX_GPIO_Init();
+  	  MX_DMA_Init();
+  	  MX_TIM1_Init();
+  	  MX_USART2_UART_Init();
+  	  MX_ADC1_Init();
+  	  MX_TIM3_Init();
+  	  MX_TIM4_Init();
+	 */
 	memset(argv,(int) NULL,MAX_ARGS*sizeof(char*));
 	memset(cmdBuffer,(int) NULL,CMD_BUFFER_SIZE*sizeof(char));
 	memset(shell.uartRxBuffer,(int) NULL,UART_RX_BUFFER_SIZE*sizeof(char));
@@ -155,7 +175,9 @@ int main(void)
 	HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&rawCurrent, 1);
 
-
+	HAL_TIM_Base_Start(&htim1);
+	HAL_TIM_Base_Start_IT(&htim4);
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -204,7 +226,20 @@ int main(void)
 			}
 			else if(strcmp(argv[0],"get")==0)
 			{
-				shell.serial.transmit((uint8_t*)cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
+				if(strcmp(argv[1],"current")==0){
+					current = (float)rawCurrent[0]*CURRENT_CONVERSION_FACTOR - CURRENT_OFFSET;
+					//current+=0.36;
+
+					sprintf((char*) &(shell.uartTxBuffer), "current : %.2f A \r\n", current);
+					shell.serial.transmit(shell.uartTxBuffer, 32, HAL_MAX_DELAY);
+				}else if(strcmp(argv[1],"speed")==0){
+					float speed = diff/TICK_PER_ROTATION * MS_TO_MIN;
+					sprintf((char*) &(shell.uartTxBuffer), "speed : %.0f rpm\r\n", speed);
+					shell.serial.transmit(shell.uartTxBuffer, 32, HAL_MAX_DELAY);
+				}else if(strcmp(argv[1], "diff") == 0){
+					sprintf((char*) &(shell.uartTxBuffer), "diff : %ld\r\n", diff);
+					shell.serial.transmit(shell.uartTxBuffer, 32, HAL_MAX_DELAY);
+				}
 			}
 			else if(strcmp(argv[0],"start")==0) {
 				chopper_start();
@@ -215,6 +250,10 @@ int main(void)
 				chopper_stop();
 
 				shell.serial.transmit((uint8_t*)stopmsg, sizeof(stopmsg), HAL_MAX_DELAY);
+			}
+			else if(strcmp(argv[0],"restart")==0) {
+				chopper_restart();
+				shell.serial.transmit((uint8_t*)&restartmsg, sizeof(restartmsg), HAL_MAX_DELAY);
 			}
 			else if(strcmp(argv[0],"help")==0)
 			{
@@ -234,6 +273,9 @@ int main(void)
 
 					shell.serial.transmit((uint8_t*)&help[4], sizeof(help[4]), HAL_MAX_DELAY);
 				}
+				else if(strcmp(argv[1], "restart")==0){
+					shell.serial.transmit((uint8_t*)&help[5], sizeof(help[5]), HAL_MAX_DELAY);
+				}
 				else{
 					shell.serial.transmit((uint8_t*)&help, sizeof(help), HAL_MAX_DELAY);
 				}
@@ -246,9 +288,6 @@ int main(void)
 					uint16_t speed;
 					sscanf(argv[1], "%hd", &speed);
 					chopper_speed(speed);
-				}
-				else{
-					printf("%hn", dataRaw);
 				}
 			}
 			else{
@@ -317,7 +356,16 @@ void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart){
 }
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&rawCurrent, 1);
+
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
+{
+	if(htim->Instance == TIM4){
+		previousCNT = currentCNT;
+		currentCNT = TIM3->CNT;
+		diff = -(currentCNT-previousCNT);
+	}
 }
 /* USER CODE END 4 */
 

@@ -126,6 +126,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>chopper_start</b> (vo
 void&#160;</td><td class="memItemRight" valign="bottom"><b>chopper_stop</b> (void)</td></tr>
 <tr class="memdesc:a5cf41296fc0d49e873c241e14fcbdf31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn off the PWMs. <br /></td></tr>
 <tr class="separator:a5cf41296fc0d49e873c241e14fcbdf31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa211df7c4ac4c73a7c6e5e4a9eba1853"><td class="memItemLeft" align="right" valign="top"><a id="aa211df7c4ac4c73a7c6e5e4a9eba1853" name="aa211df7c4ac4c73a7c6e5e4a9eba1853"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>chopper_restart</b> (void)</td></tr>
+<tr class="memdesc:aa211df7c4ac4c73a7c6e5e4a9eba1853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restart the chopper and play the starting sequence. <br /></td></tr>
+<tr class="separator:aa211df7c4ac4c73a7c6e5e4a9eba1853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47cfd9fa41994cb53f7303b30519ed3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chopper_8h.html#ad47cfd9fa41994cb53f7303b30519ed3">chopper_speed</a> (uint16_t speed)</td></tr>
 <tr class="memdesc:ad47cfd9fa41994cb53f7303b30519ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the chopper speed.  <a href="chopper_8h.html#ad47cfd9fa41994cb53f7303b30519ed3">More...</a><br /></td></tr>
 <tr class="separator:ad47cfd9fa41994cb53f7303b30519ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,7 +156,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>chopper_stop</b> (voi
 <p>Set the chopper speed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">speed</td><td></td></tr>
+    <tr><td class="paramname">speed</td><td>0 rpm -&gt; speed = 850. Speed should be greater than 850 </td></tr>
   </table>
   </dd>
 </dl>

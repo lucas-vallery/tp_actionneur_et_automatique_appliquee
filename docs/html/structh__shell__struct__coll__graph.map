@@ -1,4 +1,4 @@
 <map id="h_shell_struct" name="h_shell_struct">
 <area shape="rect" id="node1" title="Shell structure." coords="7,95,110,121"/>
-<area shape="rect" id="node2" href="$structh__serial__struct.html" title=" " coords="5,5,112,32"/>
+<area shape="rect" id="node2" href="$structh__serial__struct.html" title="Structure to handle the UART abstraction layer." coords="5,5,112,32"/>
 </map>

@@ -99,33 +99,32 @@ $(document).ready(function(){initNavTree('shell_8h_source.html',''); initResizab
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#define UART_RX_BUFFER_SIZE 1</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#define CMD_BUFFER_SIZE 64</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#define MAX_ARGS 9</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// LF = line feed, saut de ligne</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#define ASCII_LF 0x0A</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// CR = carriage return, retour chariot</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#define ASCII_CR 0x0D</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// DEL = delete</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#define ASCII_DEL 0x7F</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">typedef</span> int (* serial_transmit_t)(<span class="keyword">const</span> uint8_t *pData, uint16_t size, uint32_t timeout);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">typedef</span> int (* serial_receive_t)(uint8_t *pData, uint16_t size, uint32_t timeout);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structh__serial__struct.html">   28</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structh__serial__struct.html">h_serial_struct</a> {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    serial_transmit_t   transmit;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    serial_receive_t    receive;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}<a class="code hl_struct" href="structh__serial__struct.html">h_serial_t</a>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="structh__shell__struct.html">   37</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structh__shell__struct.html">h_shell_struct</a> {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_struct" href="structh__serial__struct.html">h_serial_t</a> serial;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    uint32_t uartRxReceived;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="shell_8h.html#a882be42a49ddc3335e643d6e7ff324bb">   43</a></span>}<a class="code hl_typedef" href="shell_8h.html#a882be42a49ddc3335e643d6e7ff324bb">h_shell_t</a>;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="shell_8h.html#aca3b498f5936dbe4f3076a47c3e1810d">   23</a></span><span class="preprocessor">#define ASCII_LF 0x0A</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="shell_8h.html#a089ed4925403ab02a05e603967c74579">   28</a></span><span class="preprocessor">#define ASCII_CR 0x0D</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="shell_8h.html#a3bb28e223b7c203113dc8c0387d43b36">   33</a></span><span class="preprocessor">#define ASCII_DEL 0x7F</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">typedef</span> int (* serial_transmit_t)(<span class="keyword">const</span> uint8_t *pData, uint16_t size, uint32_t timeout);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">typedef</span> int (* serial_receive_t)(uint8_t *pData, uint16_t size, uint32_t timeout);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structh__serial__struct.html">   43</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structh__serial__struct.html">h_serial_struct</a> {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    serial_transmit_t   transmit;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    serial_receive_t    receive;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="shell_8h.html#ac4caf64b8064599e1f8636c064ac69f6">   46</a></span>}<a class="code hl_typedef" href="shell_8h.html#ac4caf64b8064599e1f8636c064ac69f6">h_serial_t</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structh__shell__struct.html">   52</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="structh__shell__struct.html">h_shell_struct</a> {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_struct" href="structh__serial__struct.html">h_serial_t</a> serial;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    uint32_t uartRxReceived;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="shell_8h.html#a882be42a49ddc3335e643d6e7ff324bb">   58</a></span>}<a class="code hl_typedef" href="shell_8h.html#a882be42a49ddc3335e643d6e7ff324bb">h_shell_t</a>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="ttc" id="ashell_8h_html_a882be42a49ddc3335e643d6e7ff324bb"><div class="ttname"><a href="shell_8h.html#a882be42a49ddc3335e643d6e7ff324bb">h_shell_t</a></div><div class="ttdeci">struct h_shell_struct h_shell_t</div><div class="ttdoc">Shell structure.</div></div>
-<div class="ttc" id="astructh__serial__struct_html"><div class="ttname"><a href="structh__serial__struct.html">h_serial_struct</a></div><div class="ttdef"><b>Definition:</b> shell.h:28</div></div>
-<div class="ttc" id="astructh__shell__struct_html"><div class="ttname"><a href="structh__shell__struct.html">h_shell_struct</a></div><div class="ttdoc">Shell structure.</div><div class="ttdef"><b>Definition:</b> shell.h:37</div></div>
+<div class="ttc" id="ashell_8h_html_ac4caf64b8064599e1f8636c064ac69f6"><div class="ttname"><a href="shell_8h.html#ac4caf64b8064599e1f8636c064ac69f6">h_serial_t</a></div><div class="ttdeci">struct h_serial_struct h_serial_t</div><div class="ttdoc">Structure to handle the UART abstraction layer.</div></div>
+<div class="ttc" id="astructh__serial__struct_html"><div class="ttname"><a href="structh__serial__struct.html">h_serial_struct</a></div><div class="ttdoc">Structure to handle the UART abstraction layer.</div><div class="ttdef"><b>Definition:</b> shell.h:43</div></div>
+<div class="ttc" id="astructh__shell__struct_html"><div class="ttname"><a href="structh__shell__struct.html">h_shell_struct</a></div><div class="ttdoc">Shell structure.</div><div class="ttdef"><b>Definition:</b> shell.h:52</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

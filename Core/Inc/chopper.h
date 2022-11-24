@@ -12,6 +12,8 @@
 #define NO_SPEED 	875
 #define STARTING_TIME 1
 
+
+
 /**
  * @brief Execute the chopper's starting sequence
  */
@@ -23,8 +25,14 @@ void chopper_start(void);
 void chopper_stop(void);
 
 /**
+ * @brief Restart the chopper and play the starting sequence
+ */
+void chopper_restart(void);
+
+/**
  * @brief Set the chopper speed
  *
- * @param speed
+ * @param speed 0 rpm -> speed = 850. Speed should be greater than 850
  */
 int chopper_speed(uint16_t speed);
+
