@@ -89,17 +89,18 @@ $(document).ready(function(){initNavTree('hal__abstraction_8h_source.html',''); 
 </div><!--header-->
 <div class="contents">
 <a href="hal__abstraction_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;usart.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define SERIAL_PORT &amp;huart2</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;usart.h&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="hal__abstraction_8h.html#a2a8471f54d64230bf62d16c8bb91fd1a">   16</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="hal__abstraction_8h.html#a2a8471f54d64230bf62d16c8bb91fd1a">serial_transmit</a>(<span class="keyword">const</span> uint8_t *pData, uint16_t size, uint32_t timeout);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keywordtype">int</span> serial_receive(uint8_t *pData, uint16_t size, uint32_t timeout);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="hal__abstraction_8h.html#ac08f8f916661bb5fc606373bea93d274">   17</a></span><span class="preprocessor">#define SERIAL_PORT &amp;huart2</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="hal__abstraction_8h.html#a2a8471f54d64230bf62d16c8bb91fd1a">   22</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="hal__abstraction_8h.html#a2a8471f54d64230bf62d16c8bb91fd1a">serial_transmit</a>(<span class="keyword">const</span> uint8_t *pData, uint16_t size, uint32_t timeout);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="hal__abstraction_8h.html#a86b388b3fb424778dfde8c83a814e773">   27</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="hal__abstraction_8h.html#a86b388b3fb424778dfde8c83a814e773">serial_receive</a>(uint8_t *pData, uint16_t size, uint32_t timeout);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="ttc" id="ahal__abstraction_8h_html_a2a8471f54d64230bf62d16c8bb91fd1a"><div class="ttname"><a href="hal__abstraction_8h.html#a2a8471f54d64230bf62d16c8bb91fd1a">serial_transmit</a></div><div class="ttdeci">int serial_transmit(const uint8_t *pData, uint16_t size, uint32_t timeout)</div><div class="ttdoc">Abstraction of HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size,...</div></div>
+<div class="ttc" id="ahal__abstraction_8h_html_a86b388b3fb424778dfde8c83a814e773"><div class="ttname"><a href="hal__abstraction_8h.html#a86b388b3fb424778dfde8c83a814e773">serial_receive</a></div><div class="ttdeci">int serial_receive(uint8_t *pData, uint16_t size, uint32_t timeout)</div><div class="ttdoc">Abstraction of HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size,...</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

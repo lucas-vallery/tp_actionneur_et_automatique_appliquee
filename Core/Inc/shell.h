@@ -1,7 +1,8 @@
 /**
  * @file 	shell.h
- * @brief 	This file contains all the functions prototypes for
- * 			the shell.c file
+ * @brief 	Header of the shell.c file
+ *
+ * This file contains all the define and typedef needed to the shell
  */
 
 
@@ -52,7 +53,7 @@ typedef struct h_serial_struct {
 typedef struct h_shell_struct {
 	h_serial_t serial;
 
-	uint32_t uartRxReceived;
+	uint32_t uartRxReceived;						/*!< UART receive flag*/
 	uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
 	uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
 }h_shell_t;

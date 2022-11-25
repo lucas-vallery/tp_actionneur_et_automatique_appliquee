@@ -106,14 +106,11 @@ Include dependency graph for chopper.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ac2cd96d53dd3ba6407db6766c3d92b26"><td class="memItemLeft" align="right" valign="top"><a id="ac2cd96d53dd3ba6407db6766c3d92b26" name="ac2cd96d53dd3ba6407db6766c3d92b26"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_SPEED</b>&#160;&#160;&#160;1500</td></tr>
+<tr class="memitem:ac2cd96d53dd3ba6407db6766c3d92b26"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chopper_8h.html#ac2cd96d53dd3ba6407db6766c3d92b26">MAX_SPEED</a>&#160;&#160;&#160;1575</td></tr>
 <tr class="separator:ac2cd96d53dd3ba6407db6766c3d92b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae84e9944a7983ebfabc5ad16c9fbc04d"><td class="memItemLeft" align="right" valign="top"><a id="ae84e9944a7983ebfabc5ad16c9fbc04d" name="ae84e9944a7983ebfabc5ad16c9fbc04d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NO_SPEED</b>&#160;&#160;&#160;875</td></tr>
+<tr class="memitem:ae84e9944a7983ebfabc5ad16c9fbc04d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chopper_8h.html#ae84e9944a7983ebfabc5ad16c9fbc04d">NO_SPEED</a>&#160;&#160;&#160;875</td></tr>
 <tr class="separator:ae84e9944a7983ebfabc5ad16c9fbc04d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15ce0bbffeedb88f502ff5db9c0d8b3b"><td class="memItemLeft" align="right" valign="top"><a id="a15ce0bbffeedb88f502ff5db9c0d8b3b" name="a15ce0bbffeedb88f502ff5db9c0d8b3b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>STARTING_TIME</b>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:a15ce0bbffeedb88f502ff5db9c0d8b3b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chopper_8h.html#a15ce0bbffeedb88f502ff5db9c0d8b3b">STARTING_TIME</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a15ce0bbffeedb88f502ff5db9c0d8b3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -136,7 +133,54 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>chopper_restart</b> (
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This file contains all the functions prototypes for the chopper.c file. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+<p >This file contains all the functions to use Microchip's MC1L 3-PHASE LOW VOLTAGE POWER MODULE with a 2-phased DC motor </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ac2cd96d53dd3ba6407db6766c3d92b26" name="ac2cd96d53dd3ba6407db6766c3d92b26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2cd96d53dd3ba6407db6766c3d92b26">&#9670;&nbsp;</a></span>MAX_SPEED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX_SPEED&#160;&#160;&#160;1575</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Maximum speed allowed. Corresponds to alpha = 90% </p>
+
+</div>
+</div>
+<a id="ae84e9944a7983ebfabc5ad16c9fbc04d" name="ae84e9944a7983ebfabc5ad16c9fbc04d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae84e9944a7983ebfabc5ad16c9fbc04d">&#9670;&nbsp;</a></span>NO_SPEED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NO_SPEED&#160;&#160;&#160;875</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Correspond to alpha = 50% </p>
+
+</div>
+</div>
+<a id="a15ce0bbffeedb88f502ff5db9c0d8b3b" name="a15ce0bbffeedb88f502ff5db9c0d8b3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15ce0bbffeedb88f502ff5db9c0d8b3b">&#9670;&nbsp;</a></span>STARTING_TIME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STARTING_TIME&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Minimum pulse width needed on ISO_RESET to start the chopper. (1.2.4.1 in the datasheet) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="ad47cfd9fa41994cb53f7303b30519ed3" name="ad47cfd9fa41994cb53f7303b30519ed3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad47cfd9fa41994cb53f7303b30519ed3">&#9670;&nbsp;</a></span>chopper_speed()</h2>
 
@@ -154,9 +198,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>chopper_restart</b> (
 </div><div class="memdoc">
 
 <p>Set the chopper speed. </p>
+<dl class="section warning"><dt>Warning</dt><dd>A call to this function blocks the CPU due to the time needed to accelerate to the desired speed</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">speed</td><td>0 rpm -&gt; speed = 850. Speed should be greater than 850 </td></tr>
+    <tr><td class="paramname">speed</td><td>A speed of 850 corresponds to alpha = 50% (rotation speed of 0 rpm) </td></tr>
   </table>
   </dd>
 </dl>

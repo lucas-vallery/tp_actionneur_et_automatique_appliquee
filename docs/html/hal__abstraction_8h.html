@@ -106,8 +106,7 @@ Include dependency graph for hal_abstraction.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ac08f8f916661bb5fc606373bea93d274"><td class="memItemLeft" align="right" valign="top"><a id="ac08f8f916661bb5fc606373bea93d274" name="ac08f8f916661bb5fc606373bea93d274"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SERIAL_PORT</b>&#160;&#160;&#160;&amp;huart2</td></tr>
+<tr class="memitem:ac08f8f916661bb5fc606373bea93d274"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal__abstraction_8h.html#ac08f8f916661bb5fc606373bea93d274">SERIAL_PORT</a>&#160;&#160;&#160;&amp;huart2</td></tr>
 <tr class="separator:ac08f8f916661bb5fc606373bea93d274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -118,11 +117,29 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>serial_transmit</b> (c
 <tr class="separator:a2a8471f54d64230bf62d16c8bb91fd1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86b388b3fb424778dfde8c83a814e773"><td class="memItemLeft" align="right" valign="top"><a id="a86b388b3fb424778dfde8c83a814e773" name="a86b388b3fb424778dfde8c83a814e773"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>serial_receive</b> (uint8_t *pData, uint16_t size, uint32_t timeout)</td></tr>
+<tr class="memdesc:a86b388b3fb424778dfde8c83a814e773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstraction of HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout) <br /></td></tr>
 <tr class="separator:a86b388b3fb424778dfde8c83a814e773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This file contains all the functions prototypes for the hal_abstraction.c file. </p>
-</div></div><!-- contents -->
+<p >This file contains all the abstraction functions needed to the shell </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ac08f8f916661bb5fc606373bea93d274" name="ac08f8f916661bb5fc606373bea93d274"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac08f8f916661bb5fc606373bea93d274">&#9670;&nbsp;</a></span>SERIAL_PORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SERIAL_PORT&#160;&#160;&#160;&amp;huart2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Serial port linked to the computer </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
