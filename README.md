@@ -116,7 +116,9 @@ Le cahier des charges est le suivant :
 
 Voici ce que nous observons à l'oscilloscope : 
 
+![Commande complémentaire décalée](images/tek00002)
 
+On retrouve bien notre fréquence, notre deadtime et notre commande.
 
 ## TP2 - Mesure de vitesse et de courant
 
