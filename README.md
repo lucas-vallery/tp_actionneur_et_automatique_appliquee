@@ -138,8 +138,22 @@ Pour donner une vitesse au moteur il faut écrire :
 ```bash 
 speed XXXX
 ```
+Lorsque l'on exécute cette commande, le code suivant intervient :
 
+```c
+else if(strcmp(argv[0],"speed")==0) {
+	if(argv[1] != NULL){
+		uint16_t speed;
+		sscanf(argv[1], "%hd", &speed);
+		chopper_speed(speed);
+	}
+}
+```
+*chopper_speed* prend en argument la vitesse que l'on veut atteindre, c'est à dire la valeur *XXXX* que l'on a écrite en ligne de commande.
+Cette valeur sera comparé dans la fonction à la vitesse que l'on a effectivement.
+On choisit un pas *accelStep* permettant d'accélérer ou de ralentir sans faire décrocher le moteur, ce qui est le principal problème que l'on peut avoir.
 
+De plus, dans le cahier des charges, il est indiqué que la vitesse est majorée par la vitesse maximale du moteur. 
 
 ```c
 int chopper_speed(uint16_t targetSpeed){
@@ -170,15 +184,6 @@ int chopper_speed(uint16_t targetSpeed){
 			HAL_Delay(10);
 		}
 		return 0;
-	}
-}
-
-```c
-else if(strcmp(argv[0],"speed")==0) {
-	if(argv[1] != NULL){
-		uint16_t speed;
-		sscanf(argv[1], "%hd", &speed);
-		chopper_speed(speed);
 	}
 }
 ```
