@@ -49,7 +49,7 @@ Le microncontrôleur est configuré comme suit :
   * *DMA Continuous Request* à *Enable*
   * *External Trigger Conversion Source* en *Timet 1 Trigger Out event*
   * Les autres paramètres ne sont pas changés 
-* Enfin, le DMA1 est configuré pour fonctionner en mode *Circular* avec un *Data Width" d'un mot
+* Enfin, le DMA1 est configuré pour fonctionner en mode *Circular* avec un *Data Width* d'un mot
 
 ## Console UART
 
@@ -90,7 +90,7 @@ const uint8_t pinoutmsg[7][64]=
 		" ------------------\r\n"
 };
 ```
-Puis on réalise des conditions sur nos commandes dans le while(1). Voici, ci-dessous l'exemple pour l'écriture dans la console de la commande start et stop.
+Puis on réalise des conditions sur nos commandes dans le *while(1)*. Voici, ci-dessous l'exemple pour l'écriture dans la console de la commande start et stop.
 
 ```c
 else if(strcmp(argv[0],"start")==0) {
@@ -118,21 +118,28 @@ Voici ce que nous observons à l'oscilloscope :
 
 ![Commande complémentaire décalée](images/tek00002.png)
 
-On retrouve bien notre fréquence, notre deadtime et notre commande.
+On retrouve bien notre fréquence, notre deadtime et notre commande complémentaire décalée.
 
 Pour demarrer notre moteur, il faut mettre la broche GPIO à 1 pendant *STARTING TIME* puis la repasser à 0.
 Puis, il faut activer nos PWMs et nos PWNs complémentaires.
+Pour stopper le moteur, il faut mettre la vitesse nulle aux deux channels de notre *Timer 1* puis éteindre nos PWMs.
+Ci-dessous, les prototypes des deux fonctions : 
 
 ```c
 void chopper_start(void);
 ```
 
-Pour stopper le moteur, il faut mettre la vitesse nulle aux deux channels de notre *Timer 1* puis éteindre nos PWMs
-
 ```c
 void chopper_stop(void);
 ```
-Pour l'écriture
+
+Pour donner une vitesse au moteur il faut écrire :
+
+```bash 
+speed XXXX
+```
+
+
 
 ```c
 int chopper_speed(uint16_t targetSpeed){
