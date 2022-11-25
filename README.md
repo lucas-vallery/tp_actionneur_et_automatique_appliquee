@@ -109,9 +109,9 @@ else if(strcmp(argv[0],"stop")==0) {
 
 Dans un premier temps, il a fallu générer 4 PWMs en complémentaire décalée pour contrôler le moteur en boucle ouverte. 
 Le cahier des charges est le suivant : 
--Fréquence de la PWM : 16kHz
--Temps mort minimum : 2us
--Résolution minimum : 10bits.
+- Fréquence de la PWM : 16kHz
+- Temps mort minimum : 2us
+- Résolution minimum : 10bits
 
 ## TP2 - Mesure de vitesse et de courant
 
