@@ -6,6 +6,7 @@ La documentation peut être trouvée [ici](https://lucas-vallery.github.io/tp_ac
 
 - [Introduction](#introduction)
 - [Configuration du microcontrôleur](#Configuration-du-microcontrôleur)
+- [Console UART](#Console-UART)
 - [TP1 - Commande MCC Classique](#TP1---commande-mcc-classique)
 - [TP2 - Mesure de vitesse et de courant](#tp2---mesure-de-vitesse-et-de-courant)
 - [Conclusion](#conclusion)
@@ -112,6 +113,9 @@ Le cahier des charges est le suivant :
 - Fréquence de la PWM : 16kHz
 - Temps mort minimum : 2us
 - Résolution minimum : 10bits
+
+Voici ce que nous observons à l'oscilloscope : 
+
 
 
 ## TP2 - Mesure de vitesse et de courant
