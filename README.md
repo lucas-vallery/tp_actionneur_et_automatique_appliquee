@@ -12,6 +12,11 @@ La documentation peut être trouvée [ici](https://lucas-vallery.github.io/tp_ac
 
 ## Introduction
 
+L'objectif de ces 3 séances de TP était de réaliser : 
+- un shell pour commander le hâcheur
+- la commande des 4 transistors du hâcheur en commande complémentaire décalée
+- l'acquisition des différents capteurs
+
 ## Configuration du microcontrôleur
 
 Le microncontrôleur est configuré comme suit :
@@ -44,6 +49,47 @@ Le microncontrôleur est configuré comme suit :
   * *External Trigger Conversion Source* en *Timet 1 Trigger Out event*
   * Les autres paramètres ne sont pas changés 
 * Enfin, le DMA1 est configuré pour fonctionner en mode *Circular* avec un *Data Width" d'un mots
+
+## Console UART
+
+En amont de notre travail sur le moteur, nous avons dû améliorer le shell déjà existant afin d'implémenter les fonctions de base telles que start, stop, pinout et help. 
+Nous avons déclaré en variables globales nos chaînes de caractères.
+
+```c
+const uint8_t prompt[]="user@Nucleo-STM32G431>>";
+uint8_t started[]=
+		"\r\n*-----------------------------*"
+		"\r\n| Welcome on Nucleo-STM32G474 |"
+		"\r\n*-----------------------------*"
+		"\r\n";
+const uint8_t newline[]="\r\n";
+const uint8_t cmdNotFound[]="Command not found\r\n";
+const uint8_t startmsg[] = "Power ON\r\n";
+const uint8_t stopmsg[] = "Power OFF\r\n";
+const uint8_t restartmsg[] = "Restarting...\r\nPower ON\r\n";
+
+const uint8_t help[6][32]=
+{
+		"set <pin> <state>\r\n",
+		"get <value name>\r\n",
+		"start\r\n",
+		"stop\r\n",
+		"pinout\r\n",
+		"restart\r\n"
+};
+
+const uint8_t pinoutmsg[7][64]=
+{
+		"Pinout\r\n",
+		" ------------------\r\n"
+		"| PA8  | TIM1_CH1  |\r\n",
+		"| PA9  | TIM1_CH2  |\r\n",
+		"| PA11 | TIM1_CH1N |\r\n",
+		"| PA12 | TIM1_CH2N |\r\n",
+		" ------------------\r\n"
+};
+```
+
 
 ## TP1 - Commande MCC Classique
 
