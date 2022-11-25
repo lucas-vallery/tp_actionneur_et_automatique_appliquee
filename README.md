@@ -120,6 +120,9 @@ Voici ce que nous observons à l'oscilloscope :
 
 On retrouve bien notre fréquence, notre deadtime et notre commande.
 
+Pour demarrer notre moteur, il faut mettre la broche GPIO à 1 pendant *STARTING TIME* puis la repasser à 0.
+Puis, il faut activer nos PWMs et nos PWNs complémentaires.
+
 ```c
 void chopper_start(void){
 	HAL_GPIO_WritePin(ISO_RESET_GPIO_Port, ISO_RESET_Pin, SET);
@@ -134,6 +137,8 @@ void chopper_start(void){
 }
 ```
 
+Pour stopper le moteur, il faut mettre la vitesse nulle aux deux channels de notre *Timer 1* puis éteindre nos PWMs
+
 ```c
 void chopper_stop(void){
 	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, (uint16_t) NO_SPEED);
@@ -146,6 +151,7 @@ void chopper_stop(void){
 
 }
 ```
+Pour l'écriture
 
 ```c
 int chopper_speed(uint16_t targetSpeed){
@@ -178,6 +184,16 @@ int chopper_speed(uint16_t targetSpeed){
 		return 0;
 	}
 }
+
+```c
+else if(strcmp(argv[0],"speed")==0) {
+	if(argv[1] != NULL){
+		uint16_t speed;
+		sscanf(argv[1], "%hd", &speed);
+		chopper_speed(speed);
+	}
+}
+```
 
 
 ## TP2 - Mesure de vitesse et de courant
