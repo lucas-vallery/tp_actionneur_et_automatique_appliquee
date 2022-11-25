@@ -24,7 +24,7 @@ Le microncontrôleur est configuré comme suit :
 
 * L'horloge HCLK est configurée à 170 Mhz. Les bus APBx péripheriques et APBx timers sont configuré à 170 Mhz.
 * Le *timer* 1 est utilisé pour générer les PWMs de commande :
-  * *Prescalar* à 2
+  * *Prescaler* à 2
   * *Counter Mode* à *Center Aligned mode 1*
   * *Counter Period* à 1750
   * *auto-reload preload* à *Enable*
@@ -38,18 +38,18 @@ Le microncontrôleur est configuré comme suit :
     |CH2        |PA9      |
     |CH1N       |PA11     |
     |CH2N       |PA12     |
-  * Tous les autres paramètres sont laissées par défaut
+  * Tous les autres paramètres sont laissés par défaut
 * Le *timer* 3 est utilisé en *Encode Mode*
   * *Encoder Mode* à *Encoder Mode TI1 and TI2*
   * Tous les autres paramètres sont inchangés
 * Le *timer* 4 génére des interruptions qui nous permettent de mesurer la vitesse de rotation du moteur
-  * *Prescalar* à 170
+  * *Prescaler* à 170
   * *Counter Period* à 1000
 * L'ADC1 est configuré pour fonctionner avec le DMA
   * *DMA Continuous Request* à *Enable*
   * *External Trigger Conversion Source* en *Timet 1 Trigger Out event*
   * Les autres paramètres ne sont pas changés 
-* Enfin, le DMA1 est configuré pour fonctionner en mode *Circular* avec un *Data Width" d'un mots
+* Enfin, le DMA1 est configuré pour fonctionner en mode *Circular* avec un *Data Width" d'un mot
 
 ## Console UART
 
@@ -198,9 +198,9 @@ current : 1.92 A
 ```
 ## Aquisition de la vitesse
 
-Un codeur incrémental est fixé sur l'abre du moteur. Avec les paramètre de *timer* (*Encoder Mode TI1 and TI2*) que nous avons défini, le codeur à une résolution de 4096 incrément de *timer* par tour.
+Un codeur incrémental est fixé sur l'arbre du moteur. Avec les paramètres de *timer* (*Encoder Mode TI1 and TI2*) que nous avons défini, le codeur a une résolution de 4096 incréments de *timer* par tour.
 
-Nous utilisons un troisième *timer* qui génére une interruption toute les millisecondes. Quand une interruption est générée nous mesurons le nombre de *tick* de *timer* générée depuis la dernière interruption. 
+Nous utilisons un troisième *timer* générant une interruption toute les millisecondes. Quand une interruption est générée nous mesurons le nombre de *tick* de *timer* générée depuis la dernière interruption. 
 ```c
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
@@ -211,11 +211,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 	}
 }
 ```
-Ainsi, nous avons le nombre d'incrément de *timer* en une milliseconde. Sachant qu'il y a 4096 incrément de *timer* par tour de moteur, nous pouvons en déduire la vitesse du moteur en toure par minute avec la formule suivante :
+Ainsi, nous avons le nombre d'incrément de *timer* en une milliseconde. Sachant qu'il y a 4096 incréments de *timer* par tour de moteur, nous pouvons en déduire la vitesse du moteur en tour par minute avec la formule suivante :
 
 $\Omega = x\times {1000 \over 4096}$
 
-Avec $x$ le nombre d'incrément de *timer* en une milliseconde.
+Avec $x$ le nombre d'incréments de *timer* en une milliseconde.
 
 Nous avons implémenté une commande pour lire la vitesse dans le *shell* :
 
