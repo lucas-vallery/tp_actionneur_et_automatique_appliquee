@@ -198,4 +198,49 @@ else if(strcmp(argv[0],"speed")==0) {
 
 ## TP2 - Mesure de vitesse et de courant
 
+Dans le but de réaliser un potentiel asservissement en courrant et en vitesse nous devons acquérir les valeurs de ces deux grandeurs.
+
+### Acquisition du courant 
+
+Nous mesurons le courant à l'aide du capteur à effet Hall intégré dans le hacheur. Pour ce faire nous connectons la sortie correspondante du hacheur sur l'ADC1 de la STM32. 
+
+Afin de décharcher le CPU, nous configurons le DMA afin que les mesures de l'ADC soient directement stockée en mémoire. 
+
+L'ADC converti une tension comprise entre 0 et 3,3 V avec une resolution de 12 bits. De plus, le coeeficient de conversion de capteut à effet Hall est de 12 A/V avec un *offset* de 2,5 V. Nous devons donc appliquer la formule suivante à la valeur $x$ issue de l'ADC :
+
+$I = (x{3.3\over 4096} - 2.5)\times12$
+
+Nous avons implémenté la commande suivant pour lire la valeur de courant dans la console :
+```bash
+user@Nucleo-STM32G431>> get current
+current : 1.92 A
+```
+## Aquisition de la vitesse
+
+Un codeur incrémental est fixé sur l'abre du moteur. Avec les paramètre de *timer* (*Encoder Mode TI1 and TI2*) que nous avons défini, le codeur à une résolution de 4096 incrément de *timer* par tour.
+
+Nous utilisons un troisième *timer* qui génére une interruption toute les millisecondes. Quand une interruption est générée nous mesurons le nombre de *tick* de *timer* générée depuis la dernière interruption. 
+```c
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
+{
+	if(htim->Instance == TIM4){
+		previousCNT = currentCNT;
+		currentCNT = TIM3->CNT;
+		diff = -(currentCNT-previousCNT);
+	}
+}
+```
+Ainsi, nous avons le nombre d'incrément de *timer* en une milliseconde. Sachant qu'il y a 4096 incrément de *timer* par tour de moteur, nous pouvons en déduire la vitesse du moteur en toure par minute avec la formule suivante :
+
+$\Omega = x\times {1000 \over 4096}$
+
+Avec $x$ le nombre d'incrément de *timer* en une milliseconde.
+
+Nous avons implémenté une commande pour lire la vitesse dans le *shell* :
+
+```bash 
+user@Nucleo-STM32G431>> get speed
+speed : 44 rpm
+```
+
 ## Conclusion
