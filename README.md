@@ -124,32 +124,13 @@ Pour demarrer notre moteur, il faut mettre la broche GPIO à 1 pendant *STARTING
 Puis, il faut activer nos PWMs et nos PWNs complémentaires.
 
 ```c
-void chopper_start(void){
-	HAL_GPIO_WritePin(ISO_RESET_GPIO_Port, ISO_RESET_Pin, SET);
-	HAL_Delay(STARTING_TIME);
-	HAL_GPIO_WritePin(ISO_RESET_GPIO_Port, ISO_RESET_Pin, RESET);
-
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
-	HAL_TIM_Base_Start(&htim1);
-}
+void chopper_start(void);
 ```
 
 Pour stopper le moteur, il faut mettre la vitesse nulle aux deux channels de notre *Timer 1* puis éteindre nos PWMs
 
 ```c
-void chopper_stop(void){
-	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, (uint16_t) NO_SPEED);
-	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, (uint16_t) NO_SPEED);
-
-	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
-	HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
-	HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
-
-}
+void chopper_stop(void);
 ```
 Pour l'écriture
 
