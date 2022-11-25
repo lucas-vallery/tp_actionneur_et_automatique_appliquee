@@ -113,6 +113,8 @@ Le cahier des charges est le suivant :
 - Temps mort minimum : 2us
 - Résolution minimum : 10bits
 
+[ici](https://lucas-vallery.github.io/tp_actionneur_et_automatique_appliquee/html/chopper_8h.html#af6d055a1565b1d2a0dfbcb56e328b70e)
+
 ## TP2 - Mesure de vitesse et de courant
 
 ## Conclusion
