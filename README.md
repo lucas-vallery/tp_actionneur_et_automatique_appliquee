@@ -89,9 +89,29 @@ const uint8_t pinoutmsg[7][64]=
 		" ------------------\r\n"
 };
 ```
+Puis on réalise des conditions sur nos commandes dans le while(1). Voici, ci-dessous l'exemple pour l'écriture dans la console de la commande start et stop.
+
+```c
+else if(strcmp(argv[0],"start")==0) {
+	chopper_start();
+
+	shell.serial.transmit((uint8_t*)startmsg, sizeof(startmsg), HAL_MAX_DELAY);
+}
+else if(strcmp(argv[0],"stop")==0) {
+	chopper_stop();
+
+	shell.serial.transmit((uint8_t*)stopmsg, sizeof(stopmsg), HAL_MAX_DELAY);
+}
+```
 
 
 ## TP1 - Commande MCC Classique
+
+Dans un premier temps, il a fallu générer 4 PWMs en complémentaire décalée pour contrôler le moteur en boucle ouverte. 
+Le cahier des charges est le suivant : 
+-Fréquence de la PWM : 16kHz
+-Temps mort minimum : 2us
+-Résolution minimum : 10bits.
 
 ## TP2 - Mesure de vitesse et de courant
 
