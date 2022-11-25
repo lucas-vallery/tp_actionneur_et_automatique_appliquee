@@ -116,7 +116,7 @@ Le cahier des charges est le suivant :
 
 Voici ce que nous observons à l'oscilloscope : 
 
-![Commande complémentaire décalée](images/tek00002)
+![Commande complémentaire décalée](images/tek00002.png)
 
 On retrouve bien notre fréquence, notre deadtime et notre commande.
 
