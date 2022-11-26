@@ -227,7 +227,7 @@ Ainsi, nous avons le nombre d'incrément de *timer* en une milliseconde. Sachant
 
 $\Omega = x\times {1000 \over 4096}$
 
-Avec $x$ le nombre d'incréments de *timer* en une milliseconde.
+Avec $x$ le nombre d'incréments de *timer* en une milliseconde et $\Omega$ en rpm.
 
 Nous avons implémenté une commande pour lire la vitesse dans le *shell* :
 
