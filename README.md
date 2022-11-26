@@ -1,6 +1,6 @@
 # TP Actionneur et Automatique Appliquée
 
-La documentation peut être trouvée [ici](https://lucas-vallery.github.io/tp_actionneur_et_automatique_appliquee/html/)
+La documentation *doxygen* du projet peut être trouvée [ici](https://lucas-vallery.github.io/tp_actionneur_et_automatique_appliquee/html/)
 
 ## Table des matières
 
@@ -14,9 +14,9 @@ La documentation peut être trouvée [ici](https://lucas-vallery.github.io/tp_ac
 ## Introduction
 
 L'objectif de ces 3 séances de TP était de réaliser : 
-- un shell pour commander le hâcheur
-- la commande des 4 transistors du hâcheur en commande complémentaire décalée
-- l'acquisition des différents capteurs
+- Un shell pour interfacer le hacheur, la STM32 et notre PC
+- La commande des 4 transistors du hâcheur en commande complémentaire décalée
+- L'acquisition du courant dans un bras de pont et de la vitesse du moteur
 
 ## Configuration du microcontrôleur
 
@@ -32,12 +32,12 @@ Le microncontrôleur est configuré comme suit :
   * *Dead Time* à 203
   * Le pulse des deux *channels* des PWMs à 875 (alpha = 50%)
   * Les PWMs sont générées sur les broches suivantes :
-    |*Channel*  |Broche   |
-    |-----------|---------|
-    |CH1        |PA8      |
-    |CH2        |PA9      |
-    |CH1N       |PA11     |
-    |CH2N       |PA12     |
+    |*Channel*  |Broche   |Hacheur	|
+    |-----------|---------|---------|
+    |CH1        |PA8      |Y_TOP	|
+    |CH2        |PA9      |B_TOP	|
+    |CH1N       |PA11     |Y_BOTTOM	|
+    |CH2N       |PA12     |B_BOTTOM	|
   * Tous les autres paramètres sont laissés par défaut
 * Le *timer* 3 est utilisé en *Encode Mode*
   * *Encoder Mode* à *Encoder Mode TI1 and TI2*
@@ -47,13 +47,13 @@ Le microncontrôleur est configuré comme suit :
   * *Counter Period* à 1000
 * L'ADC1 est configuré pour fonctionner avec le DMA
   * *DMA Continuous Request* à *Enable*
-  * *External Trigger Conversion Source* en *Timet 1 Trigger Out event*
+  * *External Trigger Conversion Source* en *Timer 1 Trigger Out event*
   * Les autres paramètres ne sont pas changés 
-* Enfin, le DMA1 est configuré pour fonctionner en mode *Circular* avec un *Data Width* d'un mot
+* Enfin, le DMA1 est configuré pour fonctionner en mode *Circular* avec une *Data Width* d'un mot
 
 ## Console UART
 
-En amont de notre travail sur le moteur, nous avons dû améliorer le shell déjà existant afin d'implémenter les fonctions de base telles que start, stop, pinout et help. 
+En amont de notre travail sur le moteur, nous avons dû modifier le *shell* existant afin d'implémenter les fonctions de commande du hacheur tel que *start* et *stop*. Nous avons également ajouté les commandes *pinout* et *help*. 
 Nous avons déclaré en variables globales nos chaînes de caractères.
 
 ```c
@@ -90,7 +90,7 @@ const uint8_t pinoutmsg[7][64]=
 		" ------------------\r\n"
 };
 ```
-Puis on réalise des conditions sur nos commandes dans le *while(1)*. Voici, ci-dessous l'exemple pour l'écriture dans la console de la commande start et stop.
+Une fois que l'utilisateur a saisi une chaine de caractères, nous testons si elle correspond à une commande connue. Voici, ci-dessous, l'exemple pour l'écriture dans la console de la commande *start* et *stop*.
 
 ```c
 else if(strcmp(argv[0],"start")==0) {
@@ -105,24 +105,26 @@ else if(strcmp(argv[0],"stop")==0) {
 }
 ```
 
-
 ## TP1 - Commande MCC Classique
 
-Dans un premier temps, il a fallu générer 4 PWMs en complémentaire décalée pour contrôler le moteur en boucle ouverte. 
+Dans un premier temps, il a fallu générer 4 siganux PWMs complémentaires décalés pour contrôler les transistors du hacheur. 
 Le cahier des charges est le suivant : 
-- Fréquence de la PWM : 16kHz
-- Temps mort minimum : 2us
-- Résolution minimum : 10bits
+- Fréquence des PWMs : 16 kHz
+- Temps mort minimum : 2 $\mu s$ 
+- Résolution minimum : 10 bits
 
 Voici ce que nous observons à l'oscilloscope : 
 
 ![Commande complémentaire décalée](images/tek00002.png)
 
-On retrouve bien notre fréquence, notre deadtime et notre commande complémentaire décalée.
+Les signaux bleu et jaune sont complémentaires. Nous avons mesuré les temps morts avec les curseurs. Il est effectivement de 2 $\mu s$. Leur fréquence est effectivement de 16 kHz. Ces deux signaux commanderont un bras du pont en H. Les deux autres signaux sont décalés d'une demi-période et compléménetaires entre eux. Ils commanderont l'autre bras.
 
-Pour demarrer notre moteur, il faut mettre la broche GPIO à 1 pendant *STARTING TIME* puis la repasser à 0.
-Puis, il faut activer nos PWMs et nos PWNs complémentaires.
-Pour stopper le moteur, il faut mettre la vitesse nulle aux deux channels de notre *Timer 1* puis éteindre nos PWMs.
+Pour initilaiser le hacheur, il faut mettre sa broche ISO_RESET à 1 pendant STARTING_TIME puis la repasser à 0.
+
+Puis, nous activons la génération des signaux de commande avec un rapport cyclique de 50% (vitesse nulle).
+
+Pour arrêter le moteur, nous imposons un rapport cyclique de 50% sur les deux voies du *Timer 1* puis désactivons la générations des signaux de commandes.
+
 Ci-dessous, les prototypes des deux fonctions : 
 
 ```c
@@ -133,33 +135,35 @@ void chopper_start(void);
 void chopper_stop(void);
 ```
 
-Pour donner une vitesse au moteur il faut écrire :
+Pour faire tourner le moteir il faut augmenter le rapport cyclique, nous le faisons par intermédiaire de cette commande :
 
-```bash 
-speed XXXX
 ```
-Lorsque l'on exécute cette commande, le code suivant intervient :
+user@Nucleo-STM32G431>> speed 1200
+```
+L'execution de cette commande nécessite la conversion d'une chaine de caractère en entier non signé. Ce dessous le code le faisant :
 
 ```c
 else if(strcmp(argv[0],"speed")==0) {
 	if(argv[1] != NULL){
 		uint16_t speed;
-		sscanf(argv[1], "%hd", &speed);
+		sscanf(argv[1], "%hd", &speed);	//chaine de caractère => entier
 		chopper_speed(speed);
 	}
 }
 ```
-*chopper_speed* prend en argument la vitesse que l'on veut atteindre, c'est à dire la valeur *XXXX* que l'on a écrite en ligne de commande.
-Cette valeur sera comparé dans la fonction à la vitesse que l'on a effectivement.
-On choisit un pas *accelStep* permettant d'accélérer ou de ralentir sans faire décrocher le moteur, ce qui est le principal problème que l'on peut avoir.
+La fonction ```chopper_speed``` prend en argument la vitesse que l'on veut atteindre.
 
-De plus, dans le cahier des charges, il est indiqué que la vitesse est majorée par la vitesse maximale du moteur. 
+Cette valeur sera comparé dans la fonction à la vitesse à laquelle le moteur est entrain de tourner afin de décider si nous devons accélérer ou ralentir.
 
+En effet, nous devons accélérer progressivement afin de ne pas générer d'appel ou de retour de courant trop important. Dans un tel cas, le hacheur se met en sécurité et stop toutes opérations.
+
+De plus, dans le cahier des charges, nous voulons fixer une vitesse maximale. Nous fixons cette vitesse en limitant le rapport cyclique à 90%. 
+De la même manière, nous minorons le rapport cyclique à 50%.
 ```c
 int chopper_speed(uint16_t targetSpeed){
-	uint16_t currentSpeed = __HAL_TIM_GET_COMPARE(&htim1, TIM_CHANNEL_1);
-	uint16_t period = __HAL_TIM_GET_AUTORELOAD(&htim1);
-	uint16_t accelStep = 1;
+	uint16_t currentSpeed 	= _HAL_TIM_GET_COMPARE(&htim1, TIM_CHANNEL_1);
+	uint16_t period 		= __HAL_TIM_GET_AUTORELOAD(&htim1);
+	uint16_t accelStep 		= 1;
 
 	if(targetSpeed > MAX_SPEED){
 		targetSpeed = MAX_SPEED;
@@ -187,11 +191,11 @@ int chopper_speed(uint16_t targetSpeed){
 	}
 }
 ```
-
+Nous noterons que cette fonction est bloquante (utilisation de ```HAL_Delay()```). Elle convient à une utilisation manuelle depuis le *shell* mais nous éviterons de l'appeller dans un autre contexte.
 
 ## TP2 - Mesure de vitesse et de courant
 
-Dans le but de réaliser un potentiel asservissement en courrant et en vitesse nous devons acquérir les valeurs de ces deux grandeurs.
+Dans le but de réaliser un potentiel asservissement nous devons acquérir les valeurs de la vitesse et du courant appelé par le moteur.
 
 ### Acquisition du courant 
 
@@ -204,7 +208,7 @@ L'ADC converti une tension comprise entre 0 et 3,3 V avec une resolution de 12 b
 $I = (x{3.3\over 4096} - 2.5)\times12$
 
 Nous avons implémenté la commande suivant pour lire la valeur de courant dans la console :
-```bash
+```
 user@Nucleo-STM32G431>> get current
 current : 1.92 A
 ```
@@ -231,9 +235,13 @@ Avec $x$ le nombre d'incréments de *timer* en une milliseconde et $\Omega$ en r
 
 Nous avons implémenté une commande pour lire la vitesse dans le *shell* :
 
-```bash 
+```
 user@Nucleo-STM32G431>> get speed
 speed : 44 rpm
 ```
 
 ## Conclusion
+
+Durant ces 3 séances de TP nous avons réalisé un *shell* permettant d'interfacer un hacheur avec notre ordinateur. Nous avons ensuite généré et utilisé une commande complémentaire décalée afin de contrôler ce hacheur. Enfin, nous avons mesuré le courant consommé par le moteur et sa vitesse.
+
+L'étape suivante serait l'asservissemnt du moteur en courant puis en vitesse.
