@@ -117,9 +117,9 @@ Voici ce que nous observons à l'oscilloscope :
 
 ![Commande complémentaire décalée](images/tek00002.png)
 
-Les signaux bleu et jaune sont complémentaires. Nous avons mesuré les temps morts avec les curseurs. Il est effectivement de 2 $\mu s$. Leur fréquence est effectivement de 16 kHz. Ces deux signaux commanderont un bras du pont en H. Les deux autres signaux sont décalés d'une demi-période et compléménetaires entre eux. Ils commanderont l'autre bras.
+Les signaux bleu et jaune sont complémentaires. Nous avons mesuré les temps morts avec les curseurs. Il est effectivement de 2 $\mu s$. Leur fréquence est effectivement de 16 kHz. Ces deux signaux commanderont un bras du pont en H. Les deux autres signaux sont décalés d'une demi-période et complémentaires entre eux. Ils commanderont l'autre bras.
 
-Pour initilaiser le hacheur, il faut mettre sa broche ISO_RESET à 1 pendant STARTING_TIME puis la repasser à 0.
+Pour initialiser le hacheur, il faut mettre sa broche ISO_RESET à 1 pendant STARTING_TIME puis la repasser à 0.
 
 Puis, nous activons la génération des signaux de commande avec un rapport cyclique de 50% (vitesse nulle).
 
@@ -135,7 +135,7 @@ void chopper_start(void);
 void chopper_stop(void);
 ```
 
-Pour faire tourner le moteir il faut augmenter le rapport cyclique, nous le faisons par intermédiaire de cette commande :
+Pour faire tourner le moteur il faut augmenter le rapport cyclique, nous le faisons par intermédiaire de cette commande :
 
 ```
 user@Nucleo-STM32G431>> speed 1200
@@ -153,7 +153,7 @@ else if(strcmp(argv[0],"speed")==0) {
 ```
 La fonction ```chopper_speed``` prend en argument la vitesse que l'on veut atteindre.
 
-Cette valeur sera comparé dans la fonction à la vitesse à laquelle le moteur est entrain de tourner afin de décider si nous devons accélérer ou ralentir.
+Cette valeur sera comparée dans la fonction à la vitesse à laquelle le moteur est en train de tourner afin de décider si nous devons accélérer ou ralentir.
 
 En effet, nous devons accélérer progressivement afin de ne pas générer d'appel ou de retour de courant trop important. Dans un tel cas, le hacheur se met en sécurité et stop toutes opérations.
 
@@ -212,7 +212,7 @@ Nous avons implémenté la commande suivant pour lire la valeur de courant dans 
 user@Nucleo-STM32G431>> get current
 current : 1.92 A
 ```
-## Aquisition de la vitesse
+## Acquisition de la vitesse
 
 Un codeur incrémental est fixé sur l'arbre du moteur. Avec les paramètres de *timer* (*Encoder Mode TI1 and TI2*) que nous avons défini, le codeur a une résolution de 4096 incréments de *timer* par tour.
 
@@ -227,7 +227,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 	}
 }
 ```
-Ainsi, nous avons le nombre d'incrément de *timer* en une milliseconde. Sachant qu'il y a 4096 incréments de *timer* par tour de moteur, nous pouvons en déduire la vitesse du moteur en tour par minute avec la formule suivante :
+Ainsi, nous avons le nombre d'incréments de *timer* en une milliseconde. Sachant qu'il y a 4096 incréments de *timer* par tour de moteur, nous pouvons en déduire la vitesse du moteur en tour par minute avec la formule suivante :
 
 $\Omega = x\times {1000 \over 4096}$
 
